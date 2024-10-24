@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Button, Image, StyleSheet, Text } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { saveImage } from "../Services/data";
 import { useUserImage } from "../Hooks/useUserImage";
 
 const Home = () => {
@@ -25,14 +25,6 @@ const Home = () => {
       const { uri } = result.assets[0];
       setUserImage(uri);
       saveImage(uri);
-    }
-  };
-
-  const saveImage = async (uri) => {
-    try {
-      await AsyncStorage.setItem("savedImage", uri);
-    } catch (error) {
-      console.log("Error saving image URI", error);
     }
   };
 

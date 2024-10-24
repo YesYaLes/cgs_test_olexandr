@@ -1,5 +1,5 @@
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useRef, useCallback, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import Animated, {
@@ -12,19 +12,17 @@ import Animated, {
 const SomePage = () => {
   const sheetRef = useRef();
 
+  const offset = useSharedValue(140);
+
   const snapPoints = ["10%", "80%"];
 
-  const handleSheetChange = useCallback((index) => {
-    console.log("handleSheetChange", index);
-  }, []);
-  const handleSnapPress = useCallback((index) => {
+  const handleSnapPress = (index) => {
     sheetRef.current?.snapToIndex(index);
-  }, []);
-  const handleClosePress = useCallback(() => {
-    sheetRef.current?.close();
-  }, []);
+  };
 
-  const offset = useSharedValue(140);
+  const handleClosePress = () => {
+    sheetRef.current?.close();
+  };
 
   const animatedStyles = useAnimatedStyle(() => ({
     transform: [{ translateX: offset.value }],
@@ -60,7 +58,6 @@ const SomePage = () => {
         ref={sheetRef}
         snapPoints={snapPoints}
         enableDynamicSizing={false}
-        onChange={handleSheetChange}
       >
         <BottomSheetView style={styles.contentContainer}>
           <Text style={{ position: "absolute", top: 10, color: "white" }}>

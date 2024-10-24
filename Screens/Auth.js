@@ -13,11 +13,8 @@ import { Formik } from "formik";
 
 import { useNavigation } from "@react-navigation/native";
 import * as Yup from "yup";
-
-const UserData = {
-  email: "admin@admin.com",
-  password: "admin1234",
-};
+import { isUserCredentialsValid } from "../Services/auth";
+import { userData } from "../Services/auth";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Wrong email format").required("Email is required"),
@@ -29,13 +26,13 @@ const validationSchema = Yup.object().shape({
 const Auth = () => {
   const navigation = useNavigation();
 
-  const handleSubmit = (values) => {
-    values.email === UserData.email && values.password === UserData.password
-      ? redirectToHome(values)
+  const handleSubmit = ({ email, password }) => {
+    isUserCredentialsValid(email, password)
+      ? redirectToHome()
       : alert("No user with current data has found");
   };
 
-  const redirectToHome = (data) => {
+  const redirectToHome = () => {
     navigation.navigate("Tabs", {
       screen: "Home",
     });
@@ -49,8 +46,8 @@ const Auth = () => {
       >
         <View style={styles.userData}>
           <Text style={{ fontSize: 20 }}>Login data</Text>
-          <Text>{UserData.email}</Text>
-          <Text>{UserData.password}</Text>
+          <Text>{userData.email}</Text>
+          <Text>{userData.password}</Text>
         </View>
 
         <Text style={styles.topicText}>Log in</Text>
